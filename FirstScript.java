@@ -1,38 +1,81 @@
 package firstPackage;
 
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.ui.Select;
+
+
 
 public class FirstScript {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		System.setProperty("webdriver.gecko.driver","C:\\Users\\Kari\\Documents\\Selinium\\geckodriver.exe");
 		 
 		WebDriver driver = new FirefoxDriver();
 		
-		 String baseUrl = "http://demo.guru99.com/test/newtours/";
-	        String expectedTitle = "Welcome: Mercury Tours";
-	        String actualTitle = "";
+		//Set implicit wait of 10 seconds
+		//This is required for managing waits in selenium webdriver
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			
+		//Launch sampleSiteForSelenium
+		driver.get("http://www.artoftesting.com/sampleSiteForSelenium.html");
 
-	        // launch Fire fox and direct it to the Base URL
-	        driver.get(baseUrl);
+		//Fetch the text "This is sample text!" and print it on console
+		//Use the id of the div to locate it and then fecth text using getText() method
+		String sampleText = driver.findElement(By.id("idOfDiv")).getText();
+		System.out.println(sampleText);
+			
+		//Waiting for 3 seconds just for user to efficiently check automation
+		//Its not mandatory though
+		Thread.sleep(2000);
+			
+		//Using linkText locator to find the link and then using click() to click on it
+		driver.findElement(By.linkText("This is a link")).click();
+			
+		Thread.sleep(2000);
+		
+		//Finding textbox using id locator and then using send keys to write in it
+		driver.findElement(By.id("fname")).sendKeys("Kuldeep Rana");
+			
+		Thread.sleep(2000);
+		
+		//Clear the text written in the textbox
+		driver.findElement(By.id("fname")).clear();
+			
+		Thread.sleep(2000);
+		
+		//Clicking on button using click() command
+		driver.findElement(By.id("idOfButton")).click();
+		
+		//Javascript scroll down
+		JavascriptExecutor jse = (JavascriptExecutor)driver;
+		jse.executeScript("window.scrollBy(0,250)");
+		Thread.sleep(2000);
+			
+		//Find radio button by name and check it using click() function
+		driver.findElement(By.id("male")).click();
+			
+		Thread.sleep(2000);
+			
+		//Find checkbox by cssSelector and check it using click() function
+		driver.findElement(By.className("Automation")).click();
+				
+		Thread.sleep(2000);
+			
+		//Using Select class for for selecting value from dropdown
+		Select dropdown = new Select(driver.findElement(By.id("testingDropdown")));
+		dropdown.selectByVisibleText("Database Testing");
+		
+		jse.executeScript("window.scrollBy(0,250)");
+		Thread.sleep(50000);
+		
+		//Close the browser
+		driver.close();
 
-	        // get the actual value of the title
-	        actualTitle = driver.getTitle();
-
-	        /*
-	         * compare the actual title of the page with the expected one and print
-	         * the result as "Passed" or "Failed"
-	         */
-	        if (actualTitle.contentEquals(expectedTitle)){
-	            System.out.println("Test Passed!");
-	        } else {
-	            System.out.println("Test Failed");
-	        }
-	       
-	        //close Fire fox
-	        driver.close();
-	       
-	    }
+		}
 	}
 
